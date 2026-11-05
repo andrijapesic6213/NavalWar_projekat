@@ -1,5 +1,6 @@
 package com.example.projekat_navalwar_andrijapesic6213.scene;
 
+import com.example.projekat_navalwar_andrijapesic6213.elements.Tile;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -276,15 +277,16 @@ public class SceneCreator {
      * Scena koja se prikazuje kada se dva igraca povezu prenego da mec pocne. Ovde igraci redjaju svoje brodove na
      * svoje table i potvrdjuju kada su spremni ili napustaju mec.
      */
-    public static Scene createReadyUpScene() {
+    public static Scene createReadyUpScene(Tile[][] tiles) {
         BorderPane root = new BorderPane();
         Label infoTextLabel = new Label("Ready up"); // ili "Waiting for the opponent"
         Button leaveButton = new Button("Leave");
         Button readyButton = new Button("Ready");
-        Pane[] panes = new Pane[100];
         Rectangle boardRectangle = new Rectangle(500, 500);
 
         infoTextLabel.setFont(new Font(40));
+
+        boardRectangle.setFill(Color.NAVY);
 
         leaveButton.setFont(new Font(20));
         leaveButton.setPrefSize(100, 20);
@@ -306,14 +308,9 @@ public class SceneCreator {
         HBox buttonsHBox = new HBox();
         buttonsHBox.getChildren().addAll(leaveButton, readyButton);
 
-        for(int i = 0; i < panes.length; i++){
-            panes[i] = new Pane();
-            Rectangle newrectangle = new Rectangle(44.5, 44.5);
-            newrectangle.setFill(Color.BLUE);
-            panes[i].getChildren().add(newrectangle);
-
-            gridPane.add(panes[i], i % 10, i / 10);
-
+        for(int i = 0; i < 100; i++){
+            tiles[i / 10][i % 10] = new Tile();
+            gridPane.add(tiles[i / 10][i % 10].getTilePane(), i % 10, i / 10);
         }
 
         buttonsHBox.setAlignment(Pos.CENTER_LEFT);
@@ -338,7 +335,7 @@ public class SceneCreator {
     /**
      * Scena koja se prikazuje kada igra pocne. Ovde igraci igraju igru.
      */
-    public static Scene createGameplayScene(Stage stage) {
+    public static Scene createGameplayScene(Stage stage, Tile[][] tiles) {
         BorderPane root = new BorderPane();
         Label roundLabel = new Label("Round 0");
         Label timeLabel = new Label("Time left: 00");
@@ -348,7 +345,6 @@ public class SceneCreator {
         Button menuButton = new Button("≡");
         Button surrenderButton = new Button("Surrender");
         Button resumeButton = new Button("Resume");
-        Pane[] panes = new Pane[100];
         Rectangle boardRectangle = new Rectangle(500, 500);
         Rectangle popUpRectangle = new Rectangle(300, 250);
         Popup menuPopup = new Popup();
@@ -356,6 +352,8 @@ public class SceneCreator {
         roundLabel.setFont(new Font(40));
         timeLabel.setFont(new Font(30));
         fleetInfoLabel.setFont(new Font(30));
+
+        boardRectangle.setFill(Color.NAVY);
 
         popUpRectangle.setFill(Color.WHITE);
         popUpRectangle.setStroke(Color.BLACK);
@@ -413,14 +411,9 @@ public class SceneCreator {
         centerVBox.getChildren().addAll(boardInfoHBox, gridStackPane);
         menuPopup.getContent().add(popupStackPane);
 
-        for(int i = 0; i < panes.length; i++){
-            panes[i] = new Pane();
-            Rectangle newrectangle = new Rectangle(44.5, 44.5);
-            newrectangle.setFill(Color.BLUE);
-            panes[i].getChildren().add(newrectangle);
-
-            gridPane.add(panes[i], i % 10, i / 10);
-
+        for(int i = 0; i < 100; i++){
+            tiles[i / 10][i % 10] = new Tile();
+            gridPane.add(tiles[i / 10][i % 10].getTilePane(), i % 10, i / 10);
         }
 
         gameInfoHBox.setAlignment(Pos.CENTER);
