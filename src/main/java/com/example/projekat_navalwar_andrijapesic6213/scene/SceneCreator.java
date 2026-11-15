@@ -1,5 +1,6 @@
 package com.example.projekat_navalwar_andrijapesic6213.scene;
 
+import com.example.projekat_navalwar_andrijapesic6213.elements.Ship;
 import com.example.projekat_navalwar_andrijapesic6213.elements.Tile;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -277,7 +278,7 @@ public class SceneCreator {
      * Scena koja se prikazuje kada se dva igraca povezu prenego da mec pocne. Ovde igraci redjaju svoje brodove na
      * svoje table i potvrdjuju kada su spremni ili napustaju mec.
      */
-    public static Scene createReadyUpScene(Tile[][] tiles) {
+    public static Scene createReadyUpScene(Tile[][] tiles, Ship[] ships) {
         BorderPane root = new BorderPane();
         Label infoTextLabel = new Label("Ready up"); // ili "Waiting for the opponent"
         Button leaveButton = new Button("Leave");
@@ -311,6 +312,15 @@ public class SceneCreator {
         for(int i = 0; i < 100; i++){
             tiles[i / 10][i % 10] = new Tile();
             gridPane.add(tiles[i / 10][i % 10].getTilePane(), i % 10, i / 10);
+        }
+
+        for(int i = 0, n = 0; i < ships.length;){
+            if (tiles[n][9].getHasShip()){
+                n++;
+                break;
+            }
+            ships[i].setLocationCoordinates(n, 9);
+            i++;
         }
 
         buttonsHBox.setAlignment(Pos.CENTER_LEFT);

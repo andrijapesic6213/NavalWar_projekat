@@ -22,6 +22,10 @@ public class Tile extends Pane {
      * Podatak da li je ovo polje pogodjeno ili ne. Podrazumevana vrednost je false
      */
     private boolean isHit = false;
+    /**
+     * vrednost da li ovo polje ima deo broda na njemu ili ne
+     */
+    private boolean hasShip = false;
 
     /**
      * Podrazumevani konstruktor, pravi Pane i ImageView i stavlja imageView u Pane
@@ -49,11 +53,25 @@ public class Tile extends Pane {
     public boolean getIsHit() {
         return isHit;
     }
+
+    /**
+     * vraca da li ovo polje ima deo broda na sebi ili ne
+     */
+    public boolean getHasShip() {
+        return hasShip;
+    }
     /**
      * Menja vrednost promenjive isHit na novu vrednost koja je prosledjena (newIsHit)
      */
     public void setIsHit(boolean newIsHit) {
         isHit = newIsHit;
+    }
+
+    /**
+     * menja vrednost da li ovo polje ima deo broda ili ne na novu vrednost
+     */
+    public void setHasShip(boolean newHasShip) {
+        hasShip = newHasShip;
     }
 
 }
