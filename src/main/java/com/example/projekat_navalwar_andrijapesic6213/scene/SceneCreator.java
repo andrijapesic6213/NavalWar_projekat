@@ -2,6 +2,7 @@ package com.example.projekat_navalwar_andrijapesic6213.scene;
 
 import com.example.projekat_navalwar_andrijapesic6213.elements.Ship;
 import com.example.projekat_navalwar_andrijapesic6213.elements.Tile;
+import com.example.projekat_navalwar_andrijapesic6213.game_manager.GameStates;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -37,7 +38,7 @@ public class SceneCreator {
     /**
      * Pravi login scenu. Preko ove scene se igrac povezuje na server i ulazi u igru ili pravi nalog.
      */
-    public static Scene createLoginScene(){
+    private static Scene createLoginScene(){
 
         BorderPane root = new BorderPane();
 
@@ -109,14 +110,13 @@ public class SceneCreator {
         root.setAlignment(gameTitleLabel, Pos.TOP_CENTER );
         root.setAlignment(quitButton, Pos.BOTTOM_CENTER);
 
-        Scene loginScene = new Scene(root, sceneWidth, sceneHeight);
-        return loginScene;
+        return new Scene(root, sceneWidth, sceneHeight);
     }
 
     /**
      * Pravi Sign up scenu. Preko ove scene igrac pravi nalog i povezuje se na server ili se vraca na Login scenu.
      */
-    public static Scene createSignUpScene(){
+    private static Scene createSignUpScene(){
 
         BorderPane root = new BorderPane();
 
@@ -188,14 +188,13 @@ public class SceneCreator {
         root.setAlignment(gameTitleLabel, Pos.TOP_CENTER );
         root.setAlignment(quitButton, Pos.BOTTOM_CENTER);
 
-        Scene signUpScene = new Scene(root, sceneWidth, sceneHeight);
-        return signUpScene;
+        return new Scene(root, sceneWidth, sceneHeight);
     }
 
     /**
      * Pravi Main menu scenu. Ovo je scene koja se prikazuje nakon sto se igrac uloguje i iz ove scene se moze zapoceti mec.
      */
-    public static Scene createMainMenuScene(){
+    private static Scene createMainMenuScene(){
 
         BorderPane root = new BorderPane();
         Label gameTitleLabel = new Label("Naval War");
@@ -234,14 +233,13 @@ public class SceneCreator {
         root.setAlignment(gameTitleLabel, Pos.TOP_CENTER );
         root.setAlignment(quitButton, Pos.BOTTOM_CENTER);
 
-        Scene mainMenuScene = new Scene(root, sceneWidth, sceneHeight);
-        return mainMenuScene;
+        return new Scene(root, sceneWidth, sceneHeight);
     }
 
     /**
-     * Scena koja se prikazuje dok se ceka na pronalazenje protivnika. Ovde igrac ceka na protivnika ili otkazuje trazenje.
+     * Pravi scenu koja se prikazuje dok se ceka na pronalazenje protivnika. Ovde igrac ceka na protivnika ili otkazuje trazenje.
      */
-    public static Scene createMatchmakingScene() {
+    private static Scene createMatchmakingScene() {
         BorderPane root = new BorderPane();
         Label matchmakingTextLabel = new Label("Looking for an Opponent...");
         Button cancelButton = new Button("Cancel");
@@ -270,15 +268,14 @@ public class SceneCreator {
         root.setAlignment(matchmakingTextLabel, Pos.TOP_CENTER );
         root.setAlignment(cancelButton, Pos.BOTTOM_CENTER);
 
-        Scene MatchmakingScene = new Scene(root, sceneWidth, sceneHeight);
-        return MatchmakingScene;
+        return new Scene(root, sceneWidth, sceneHeight);
     }
 
     /**
-     * Scena koja se prikazuje kada se dva igraca povezu prenego da mec pocne. Ovde igraci redjaju svoje brodove na
+     * Pravi scenu koja se prikazuje kada se dva igraca povezu prenego da mec pocne. Ovde igraci redjaju svoje brodove na
      * svoje table i potvrdjuju kada su spremni ili napustaju mec.
      */
-    public static Scene createReadyUpScene(Tile[][] tiles, Ship[] ships) {
+    private static Scene createReadyUpScene(Tile[][] tiles, Ship[] ships) {
         BorderPane root = new BorderPane();
         Label infoTextLabel = new Label("Ready up"); // ili "Waiting for the opponent"
         Button leaveButton = new Button("Leave");
@@ -310,32 +307,7 @@ public class SceneCreator {
         buttonsHBox.getChildren().addAll(leaveButton, readyButton);
 
         for(int i = 0; i < 100; i++){
-            tiles[i % 10][i / 10] = new Tile();
             gridPane.add(tiles[i % 10][i / 10].getTilePane(), i % 10, i / 10);
-        }
-
-        for(int i = 0, x = 0, y = 9; i < ships.length;){
-           if (tiles[x][y].getHasShip()){
-               x++;
-               if(x > 9){
-                   x = 0;
-                   y--;
-               }
-               continue;
-           }
-
-           if ( x + ships[i].getShipSize() - 1 > 9){
-               x = 0;
-               y--;
-               continue;
-           }
-
-            ships[i].setLocationCoordinates(x, y);
-            for(int j = 0; j < ships[i].getShipSize(); j++){
-                tiles[ships[i].getLocationCoordinates()[j].get(0)][ships[i].getLocationCoordinates()[j].get(1)].setShipOnTile(ships[i]);
-            }
-
-            i++;
         }
 
         buttonsHBox.setAlignment(Pos.CENTER_LEFT);
@@ -353,14 +325,13 @@ public class SceneCreator {
         root.setPadding(new Insets(30));
         root.setAlignment(infoTextLabel, Pos.TOP_CENTER );
 
-        Scene readyUpScene = new Scene(root, sceneWidth, sceneHeight);
-        return readyUpScene;
+        return new Scene(root, sceneWidth, sceneHeight);
     }
 
     /**
-     * Scena koja se prikazuje kada igra pocne. Ovde igraci igraju igru.
+     * Pravi scenu koja se prikazuje kada igra pocne. Ovde igraci igraju igru.
      */
-    public static Scene createGameplayScene(Stage stage, Tile[][] tiles) {
+    private static Scene createGameplayScene(Stage stage, Tile[][] tiles) {
         BorderPane root = new BorderPane();
         Label roundLabel = new Label("Round 0");
         Label timeLabel = new Label("Time left: 00");
@@ -437,8 +408,7 @@ public class SceneCreator {
         menuPopup.getContent().add(popupStackPane);
 
         for(int i = 0; i < 100; i++){
-            tiles[i / 10][i % 10] = new Tile();
-            gridPane.add(tiles[i / 10][i % 10].getTilePane(), i % 10, i / 10);
+            gridPane.add(tiles[i % 10][i / 10].getTilePane(), i % 10, i / 10);
         }
 
         gameInfoHBox.setAlignment(Pos.CENTER);
@@ -462,8 +432,20 @@ public class SceneCreator {
         root.setPadding(new Insets(20,30,30,30));
         root.setAlignment(confirmButton, Pos.BOTTOM_CENTER);
 
-        Scene readyUpScene = new Scene(root, sceneWidth, sceneHeight);
-        return readyUpScene;
+        return new Scene(root, sceneWidth, sceneHeight);
     }
 
+    /**
+     * Pravi odredjenu scenu naspram prosledjenog GameState-a
+     */
+    public static Scene createScene(GameStates gameState, Tile[][] tiles, Ship[] ships, Stage stage) {
+        return switch (gameState) {
+            case LOG_IN -> createLoginScene();
+            case SIGN_UP -> createSignUpScene();
+            case MAIN_MENU -> createMainMenuScene();
+            case MATCHMAKING -> createMatchmakingScene();
+            case READY_UP -> createReadyUpScene(tiles, ships);
+            case ACTIVE_GAME -> createGameplayScene(stage, tiles);
+        };
+    }
 }

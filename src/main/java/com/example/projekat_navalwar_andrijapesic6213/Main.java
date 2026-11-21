@@ -4,6 +4,7 @@ import com.example.projekat_navalwar_andrijapesic6213.elements.Ship;
 import com.example.projekat_navalwar_andrijapesic6213.elements.ShipTypes;
 import com.example.projekat_navalwar_andrijapesic6213.elements.Tile;
 import com.example.projekat_navalwar_andrijapesic6213.game_manager.GameManager;
+import com.example.projekat_navalwar_andrijapesic6213.game_manager.GameStates;
 import com.example.projekat_navalwar_andrijapesic6213.scene.SceneCreator;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -25,7 +26,11 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
+        GameStates gameState = GameStates.ACTIVE_GAME;
         Tile[][] tiles = new Tile[10][10];
+        for(int i = 0; i < 100; i++){
+            tiles[i % 10][i / 10] = new Tile();
+        }
         Ship[] ships = new Ship[6];
         ships[0] = new Ship(ShipTypes.BATTLESHIP);
         ships[1] = new Ship(ShipTypes.CRUSER);
@@ -33,12 +38,39 @@ public class Main extends Application {
         ships[3] = new Ship(ShipTypes.DESTROYER);
         ships[4] = new Ship(ShipTypes.PATROL_BOAT);
         ships[5] = new Ship(ShipTypes.PATROL_BOAT);
+
         for (Ship ship : ships) {
             ship.setIsRotated(true);
         }
+
+        //postavlja brodove na tileove
+        for(int i = 0, x = 0, y = 9; i < ships.length;){
+            if (tiles[x][y].getHasShip()){
+                x++;
+                if(x > 9){
+                    x = 0;
+                    y--;
+                }
+                continue;
+            }
+
+            if ( x + ships[i].getShipSize() - 1 > 9){
+                x = 0;
+                y--;
+                continue;
+            }
+
+            ships[i].setLocationCoordinates(x, y);
+            for(int j = 0; j < ships[i].getShipSize(); j++){
+                tiles[ships[i].getLocationCoordinates()[j].get(0)][ships[i].getLocationCoordinates()[j].get(1)].setShipOnTile(ships[i]);
+            }
+
+            i++;
+        }
+
         GameManager gameManager = new GameManager(tiles,ships);
 
-        Scene scene = SceneCreator.createReadyUpScene(tiles, ships);
+        Scene scene = SceneCreator.createScene(gameState, tiles, ships, stage);
         stage.setScene(scene);
         stage.setTitle("Naval War");
         stage.show();
