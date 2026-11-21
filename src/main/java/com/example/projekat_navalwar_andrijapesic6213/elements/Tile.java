@@ -2,6 +2,7 @@ package com.example.projekat_navalwar_andrijapesic6213.elements;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 
 import java.io.File;
@@ -19,6 +20,11 @@ public class Tile extends Pane {
      */
     private ImageView imageView;
     /**
+     * brod koji svojom pozicijom zahvata ovo polje
+     */
+    private Ship shipOnTile;
+
+    /**
      * Podatak da li je ovo polje pogodjeno ili ne. Podrazumevana vrednost je false
      */
     private boolean isHit = false;
@@ -33,12 +39,12 @@ public class Tile extends Pane {
     public Tile() {
         tilePane = new Pane();
         imageView = new ImageView();
-        File imageFile = new File("src/main/resources/images/EmptyTileImage.png");
-        Image image = new Image(imageFile.toURI().toString());
+        Image image = new Image(new File("src/main/resources/images/EmptyTileImage.png").toURI().toString());
         imageView.setImage(image);
         imageView.setFitHeight(45);
         imageView.setFitWidth(45);
         tilePane.getChildren().add(imageView);
+
     }
 
     /**
@@ -68,10 +74,36 @@ public class Tile extends Pane {
     }
 
     /**
-     * menja vrednost da li ovo polje ima deo broda ili ne na novu vrednost
+     * cuva informaciju o prosedjeni brod kao i da se neki brod nalazi na ovom polju
      */
-    public void setHasShip(boolean newHasShip) {
-        hasShip = newHasShip;
+    public void setShipOnTile(Ship ship) {
+        shipOnTile = ship;
+        hasShip = true;
+    }
+    /**
+     * uklanja informaciju o brodu na ovom polju i oznacava da ovo polje nema brod na njemu
+     */
+    public void removeShip() {
+        shipOnTile = null;
+        hasShip = false;
+    }
+    /**
+     * vraca brod koji se nalazi na ovom polju, ukoliko nema informacije o brodu na ovom polju vraca null
+     */
+    public Ship getShipOnTile() {
+        return shipOnTile;
     }
 
+    /**
+     * postavlja novu sliku na polju i rotira je ako je potrebno
+     */
+    public void setTileImage(Image newTileImage, boolean rotation) {
+        imageView.setImage(newTileImage);
+        if (rotation) {
+            imageView.setRotate(90);
+        }
+        else {
+            imageView.setRotate(0);
+        }
+    }
 }

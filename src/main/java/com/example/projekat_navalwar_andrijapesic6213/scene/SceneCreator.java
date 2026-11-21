@@ -310,16 +310,31 @@ public class SceneCreator {
         buttonsHBox.getChildren().addAll(leaveButton, readyButton);
 
         for(int i = 0; i < 100; i++){
-            tiles[i / 10][i % 10] = new Tile();
-            gridPane.add(tiles[i / 10][i % 10].getTilePane(), i % 10, i / 10);
+            tiles[i % 10][i / 10] = new Tile();
+            gridPane.add(tiles[i % 10][i / 10].getTilePane(), i % 10, i / 10);
         }
 
-        for(int i = 0, n = 0; i < ships.length;){
-            if (tiles[n][9].getHasShip()){
-                n++;
-                break;
+        for(int i = 0, x = 0, y = 9; i < ships.length;){
+           if (tiles[x][y].getHasShip()){
+               x++;
+               if(x > 9){
+                   x = 0;
+                   y--;
+               }
+               continue;
+           }
+
+           if ( x + ships[i].getShipSize() - 1 > 9){
+               x = 0;
+               y--;
+               continue;
+           }
+
+            ships[i].setLocationCoordinates(x, y);
+            for(int j = 0; j < ships[i].getShipSize(); j++){
+                tiles[ships[i].getLocationCoordinates()[j].get(0)][ships[i].getLocationCoordinates()[j].get(1)].setShipOnTile(ships[i]);
             }
-            ships[i].setLocationCoordinates(n, 9);
+
             i++;
         }
 
